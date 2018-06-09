@@ -10,6 +10,7 @@ import { Department } from '../models/department.model';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
+  previewPhoto = false;
   datePickerConfig: Partial<BsDatepickerConfig>;
   dateOfBirth: Date = new Date(2018, 0, 30);
   departments: Department[] = [
@@ -32,6 +33,10 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  togglePhotoPreview() {
+    this.previewPhoto = !this.previewPhoto;
   }
 
   saveEmployee(empForm: NgForm): void {
