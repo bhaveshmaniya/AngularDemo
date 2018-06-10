@@ -113,27 +113,33 @@
         <img [src]="employee.photoPath" height="200" width="200" *ngIf="previewPhoto" />
       </div>
 
-      <div class="form-group" [class.has-error]="password.touched && password.invalid">
-        <label for="password" class="control-label">Password</label>
-        <input id="password" required type="text" class="form-control" name="password" [(ngModel)]="employee.password" #password="ngModel">
-        <span class="help-block" *ngIf="password.touched && password.errors?.required">
-          Password is required
-        </span>
-      </div>
+      <div ngModelGroup="passwordGroup" #passwordGroup="ngModelGroup" [class.has-error]="confirmPassword.touched && confirmPassword.invalid && !confirmPassword.errors?.required">
+        <div class="form-group" [class.has-error]="password.touched && password.invalid">
+          <label for="password" class="control-label">Password</label>
+          <input id="password" required type="text" class="form-control" name="password" [(ngModel)]="employee.password" #password="ngModel"
+            (change)="confirmPassword.control.updateValueAndValidity()">
+          <!-- Note: The change event is fired only after the form control has lost focus.
+                     The input event is fired as the user changes the value. So if you want the validation to trigger as the user is
+                     changing the value, use the input event instead of change event.
+          -->
+          <span class="help-block" *ngIf="password.touched && password.errors?.required">
+            Password is required
+          </span>
+        </div>
 
-      <div class="form-group" [class.has-error]="confirmPassword.touched && confirmPassword.invalid">
-        <label for="confirmPassword" class="control-label">Confirm Password</label>
-        <input name="confirmPassword" appConfirmEqualValidator="password" required id="confirmPassword" type="text" class="form-control"
-          [(ngModel)]="employee.confirmPassword" #confirmPassword="ngModel">
-        <span class="help-block" *ngIf="confirmPassword.touched && confirmPassword.errors?.required">
-          Confirm Password is required
-        </span>
-        <span class="help-block" *ngIf="confirmPassword.touched && confirmPassword.errors?.notEqual &&
+        <div class="form-group" [class.has-error]="confirmPassword.touched && confirmPassword.invalid">
+          <label for="confirmPassword" class="control-label">Confirm Password</label>
+          <input name="confirmPassword" appConfirmEqualValidator="password" required id="confirmPassword" type="text" class="form-control"
+            [(ngModel)]="employee.confirmPassword" #confirmPassword="ngModel">
+          <span class="help-block" *ngIf="confirmPassword.touched && confirmPassword.errors?.required">
+            Confirm Password is required
+          </span>
+          <span class="help-block" *ngIf="confirmPassword.touched && confirmPassword.errors?.notEqual &&
           !confirmPassword.errors?.required">
-          Password and Confirm Password does not match
-        </span>
+            Password and Confirm Password does not match
+          </span>
+        </div>
       </div>
-
     </div>
     <div class="panel-footer">
       <button class="btn btn-primary" type="submit" [disabled]="employeeForm.invalid">Save</button>
