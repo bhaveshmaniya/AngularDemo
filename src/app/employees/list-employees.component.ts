@@ -18,13 +18,5 @@ export class ListEmployeesComponent implements OnInit {
     this.employeeToDisplay = this.employees[0];
   }
 
-  nextEmployee(): void {
-    if (this.employeeToDisplay.id <= 2) {
-      this.employeeToDisplay = this.employees[this.employeeToDisplay.id];
-    } else {
-      this.employeeToDisplay = this.employees[0];
-    }
-  }
-
 }
 
