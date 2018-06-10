@@ -53,8 +53,13 @@
             <div class="col-xs-6">
               Department
             </div>
-            <div class="col-xs-6">
-              : {{employee.department}}
+            <div class="col-xs-6" [ngSwitch]="employee.department">
+              :
+              <span *ngSwitchCase="1"> Help Desk </span>
+              <span *ngSwitchCase="2"> HR </span>
+              <span *ngSwitchCase="3"> IT </span>
+              <span *ngSwitchCase="4"> Payroll </span>
+              <span *ngSwitchDefault> N/A </span>
             </div>
           </div>
           <div class="row">
