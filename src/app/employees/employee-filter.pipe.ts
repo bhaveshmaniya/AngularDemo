@@ -3,7 +3,7 @@ import { Employee } from '../models/employee.model';
 
 @Pipe({
     name: 'employeeFilter',
-    pure : true
+    pure: true
 })
 export class EmployeeFilterPipe implements PipeTransform {
     transform(employees: Employee[], searchTerm: string): Employee[] {
