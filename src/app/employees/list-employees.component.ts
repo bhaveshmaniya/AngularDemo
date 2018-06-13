@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-employees.component.css']
 })
 export class ListEmployeesComponent implements OnInit {
+  searchTerm : string;
   employees: Employee[];
   employeeToDisplay: Employee;
 
