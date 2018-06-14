@@ -14,9 +14,14 @@ import { DisplayEmployeeComponent } from './employees/display-employee.component
 import { CreateEmployeeCanDeactivateGuardService } from './employees/create-employee-can-deactivate-gaurd.service';
 import { EmployeeDetailsComponent } from './employees/employee-details.component';
 import { EmployeeFilterPipe } from './employees/employee-filter.pipe';
+import { EmployeeListResolverService } from './employees/employee-list-resolve.service';
 
 const appRoutes: Routes = [
-  { path: 'list', component: ListEmployeesComponent },
+  {
+    path: 'list',
+    component: ListEmployeesComponent,
+    resolve: { employeeList: EmployeeListResolverService }
+  },
   {
     path: 'create',
     component: CreateEmployeeComponent,
@@ -45,7 +50,8 @@ const appRoutes: Routes = [
   ],
   providers: [
     EmployeeService,
-    CreateEmployeeCanDeactivateGuardService
+    CreateEmployeeCanDeactivateGuardService,
+    EmployeeListResolverService
   ],
   bootstrap: [AppComponent]
 })
