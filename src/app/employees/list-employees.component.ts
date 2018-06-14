@@ -27,28 +27,30 @@ export class ListEmployeesComponent implements OnInit {
     private _route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.employees = this._employeeService.getEmployees();
-    this.employeeToDisplay = this.employees[0];
+    this._employeeService.getEmployees().subscribe((empList) => {
+      this.employees = empList;
+      this.employeeToDisplay = this.employees[0];
 
-    // console.log(this._route.snapshot.queryParamMap.has("searchTerm"));
-    // console.log(this._route.snapshot.queryParamMap.get("searchTerm"));
-    // console.log(this._route.snapshot.queryParamMap.getAll("searchTerm"));
-    // console.log(this._route.snapshot.queryParamMap.keys);
+      // console.log(this._route.snapshot.queryParamMap.has("searchTerm"));
+      // console.log(this._route.snapshot.queryParamMap.get("searchTerm"));
+      // console.log(this._route.snapshot.queryParamMap.getAll("searchTerm"));
+      // console.log(this._route.snapshot.queryParamMap.keys);
 
-    // Snapshot approach
-    // if (this._route.snapshot.queryParamMap.has("searchTerm")) {
-    //   this.searchTerm = this._route.snapshot.queryParamMap.get("searchTerm");
-    // } else {
-    //   this.filteredEmployees = this.employees;
-    // }
+      // Snapshot approach
+      // if (this._route.snapshot.queryParamMap.has("searchTerm")) {
+      //   this.searchTerm = this._route.snapshot.queryParamMap.get("searchTerm");
+      // } else {
+      //   this.filteredEmployees = this.employees;
+      // }
 
-    // Observable approach
-    this._route.queryParamMap.subscribe((queryParams) => {
-      if (queryParams.has("searchTerm")) {
-        this.searchTerm = queryParams.get("searchTerm");
-      } else {
-        this.filteredEmployees = this.employees;
-      }
+      // Observable approach
+      this._route.queryParamMap.subscribe((queryParams) => {
+        if (queryParams.has("searchTerm")) {
+          this.searchTerm = queryParams.get("searchTerm");
+        } else {
+          this.filteredEmployees = this.employees;
+        }
+      });
     });
   }
 
