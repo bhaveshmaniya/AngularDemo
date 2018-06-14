@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../models/employee.model';
 import { EmployeeService } from './employee.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   // selector: 'app-list-employees',
@@ -23,16 +23,39 @@ export class ListEmployeesComponent implements OnInit {
   }
 
   constructor(private _employeeService: EmployeeService,
-    private _router: Router) { }
+    private _router: Router,
+    private _route: ActivatedRoute) { }
 
   ngOnInit() {
     this.employees = this._employeeService.getEmployees();
-    this.filteredEmployees = this.employees;
     this.employeeToDisplay = this.employees[0];
+
+    // console.log(this._route.snapshot.queryParamMap.has("searchTerm"));
+    // console.log(this._route.snapshot.queryParamMap.get("searchTerm"));
+    // console.log(this._route.snapshot.queryParamMap.getAll("searchTerm"));
+    // console.log(this._route.snapshot.queryParamMap.keys);
+
+    // Snapshot approach
+    // if (this._route.snapshot.queryParamMap.has("searchTerm")) {
+    //   this.searchTerm = this._route.snapshot.queryParamMap.get("searchTerm");
+    // } else {
+    //   this.filteredEmployees = this.employees;
+    // }
+
+    // Observable approach
+    this._route.queryParamMap.subscribe((queryParams) => {
+      if (queryParams.has("searchTerm")) {
+        this.searchTerm = queryParams.get("searchTerm");
+      } else {
+        this.filteredEmployees = this.employees;
+      }
+    });
   }
 
   onClick(employeeId: number) {
-    this._router.navigate(['/employees', employeeId]);
+    this._router.navigate(['/employees', employeeId], {
+      queryParams: { 'searchTerm': this.searchTerm }
+    });
   }
 
   filterEmployees(searchKeyword: string) {
