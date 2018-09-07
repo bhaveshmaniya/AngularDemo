@@ -26,4 +26,5 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-## Reference: http://csharp-video-tutorials.blogspot.com/2017/12/angular-crud-tutorial.html
+## Reference
+http://csharp-video-tutorials.blogspot.com/2017/12/angular-crud-tutorial.html
