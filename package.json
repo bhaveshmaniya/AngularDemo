@@ -24,6 +24,7 @@
     "core-js": "^2.5.4",
     "ngx-bootstrap": "^3.0.0",
     "rxjs": "^6.0.0",
+    "webpack": "^2.5.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
