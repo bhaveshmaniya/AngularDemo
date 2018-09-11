@@ -46,7 +46,7 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     BsDatepickerModule.forRoot(),
-    RouterModule.forRoot(appRoutes, { enableTracing: true})
+    RouterModule.forRoot(appRoutes, { enableTracing: false})
   ],
   providers: [
     EmployeeService,
