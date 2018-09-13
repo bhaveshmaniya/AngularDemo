@@ -51,6 +51,17 @@ export class EmployeeService {
     }
 
     save(employee: Employee) {
-        this.listEmployees.push(employee);
+        if (employee.id == null) {
+            var maxId = this.listEmployees.reduce(function (e1, e2) {
+                return (e1.id > e2.id ? e1 : e2);
+            }).id;
+
+            // Increment Id value
+            employee.id = maxId + 1;
+            this.listEmployees.push(employee);
+        } else {
+            var foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+            this.listEmployees[foundIndex] = employee;
+        }
     }
 }

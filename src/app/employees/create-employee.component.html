@@ -1,7 +1,7 @@
 <form #employeeForm="ngForm" (ngSubmit)="saveEmployee()">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">Create Employee</h3>
+      <h3 class="panel-title">{{panelTitle}}</h3>
     </div>
     <div class="panel-body">
 
@@ -15,7 +15,7 @@
 
       <div class="form-group" [class.has-error]="email.invalid">
         <label for="email" class="control-label">Email</label>
-        <input id="email" [required]="contactPreference.value=='email'" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+        <input id="email" [required]="contactPreference.value=='Email'" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
           type="text" class="form-control" name="email" [(ngModel)]="employee.email" #email="ngModel">
         <span class="help-block" *ngIf="email.errors?.required">
           Email is required
@@ -27,7 +27,7 @@
 
       <div class="form-group" [class.has-error]="phoneNumber.invalid">
         <label for="phoneNumber" class="control-label">Phone Number</label>
-        <input id="phoneNumber" [required]="contactPreference.value=='phone'" type="text" class="form-control" name="phoneNumber"
+        <input id="phoneNumber" [required]="contactPreference.value=='Phone'" type="text" class="form-control" name="phoneNumber"
           [(ngModel)]="employee.phoneNumber" #phoneNumber="ngModel">
         <span class="help-block" *ngIf="phoneNumber.errors?.required">
           Phone Number is required
@@ -38,10 +38,12 @@
         <label class="control-label">Contact Preference</label>
         <div class="form-control">
           <label class="radio-inline">
-            <input type="radio" required name="contactPreference" value="email" [(ngModel)]="employee.contactPreference" #contactPreference="ngModel"> Email
+            <input type="radio" required name="contactPreference" value="Email" [(ngModel)]="employee.contactPreference"
+              #contactPreference="ngModel"> Email
           </label>
           <label class="radio-inline">
-            <input type="radio" required name="contactPreference" value="phone" [(ngModel)]="employee.contactPreference" #contactPreference="ngModel"> Phone
+            <input type="radio" required name="contactPreference" value="Phone" [(ngModel)]="employee.contactPreference"
+              #contactPreference="ngModel"> Phone
           </label>
         </div>
         <span class="help-block" *ngIf="contactPreference.errors?.required">
@@ -53,10 +55,12 @@
         <label class="control-label">Gender</label>
         <div class="form-control">
           <label class="radio-inline">
-            <input type="radio" required name="gender" value="male" [(ngModel)]="employee.gender" #gender="ngModel"> Male
+            <input type="radio" required name="gender" value="male" [(ngModel)]="employee.gender" #gender="ngModel">
+            Male
           </label>
           <label class="radio-inline">
-            <input type="radio" required name="gender" value="female" [(ngModel)]="employee.gender" #gender="ngModel"> Female
+            <input type="radio" required name="gender" value="female" [(ngModel)]="employee.gender" #gender="ngModel">
+            Female
           </label>
         </div>
         <span class="help-block" *ngIf="gender.errors?.required">
@@ -67,7 +71,8 @@
       <div class="form-group" [class.has-error]="isActive.invalid && isActive.touched">
         <div class="form-control">
           <label class="checkbox-inline control-label">
-            <input type="checkbox" required name="isActive" [(ngModel)]="employee.isActive" #isActive="ngModel"> Is Active
+            <input type="checkbox" required name="isActive" [(ngModel)]="employee.isActive" #isActive="ngModel"> Is
+            Active
             <!-- We can also apply required check dynamically using - [required]="employee.isActive==null" -->
           </label>
         </div>
@@ -93,8 +98,8 @@
       <div class="row">
         <div class="form-group col-md-4">
           <label for="dateOfBirth">Date of Birth</label>
-          <input id="dateOfBirth" name="dateOfBirth" [(ngModel)]="employee.dateOfBirth" placement="right" type="text" bsDatepicker
-            [bsConfig]="datePickerConfig" class="form-control" />
+          <input id="dateOfBirth" name="dateOfBirth" [(ngModel)]="employee.dateOfBirth" placement="right" type="text"
+            bsDatepicker [bsConfig]="datePickerConfig" class="form-control" />
         </div>
       </div>
 
@@ -104,13 +109,13 @@
       </div>
 
       <div class="form-group">
-        <button type="button" (click)="togglePhotoPreview()" class="btn btn-primary">
+        <button type="button" (click)="togglePhotoPreview()" class="btn btn-primary" *ngIf="employee.photoPath !== '' && employee.photoPath !== null">
           {{previewPhoto ? "Hide " : "Show " }} Preview
         </button>
       </div>
 
       <div class="form-group">
-        <img [src]="employee.photoPath" height="200" width="200" *ngIf="previewPhoto" />
+        <img [src]="employee.photoPath" height="200" width="200" *ngIf="previewPhoto && employee.photoPath !== '' && employee.photoPath !== null" />
       </div>
 
       <!-- <div ngModelGroup="passwordGroup" #passwordGroup="ngModelGroup" appConfirmEqualValidator [class.has-error]="passwordGroup.errors?.notEqual && !confirmPassword.errors?.required">
@@ -147,5 +152,5 @@
 </form>
 
 Angular Generated Form Model : {{employeeForm.value | json}}
-<br/>
-<br/> Our Employee Model : {{ employee | json}}
+<br />
+<br /> Our Employee Model : {{ employee | json}}

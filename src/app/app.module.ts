@@ -25,7 +25,10 @@ const appRoutes: Routes = [
     resolve: { employeeList: EmployeeListResolverService }
   },
   {
-    path: 'create',
+    // Note:
+    // If the id route parameter value is 0, then the form will be used to create a new employee.
+    // If the id value is > 0, then the form will be used to edit an existing employee.
+    path: 'edit/:id',
     component: CreateEmployeeComponent,
     canDeactivate: [CreateEmployeeCanDeactivateGuardService]
   },

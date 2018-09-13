@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { EmployeeService } from './employee.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Department } from '../models/department.model';
 import { Employee } from '../models/employee.model';
@@ -22,20 +22,13 @@ export class CreateEmployeeComponent implements OnInit {
     { id: 3, name: 'IT' },
     { id: 4, name: 'Payroll' }
   ];
-  employee: Employee = {
-    id: null,
-    name: null,
-    gender: null,
-    contactPreference: null,
-    phoneNumber: null,
-    email: '',
-    dateOfBirth: null,
-    department: '-1',
-    isActive: null,
-    photoPath: null
-  };
+  employee: Employee;
+  panelTitle: string;
 
-  constructor(private _employeeService: EmployeeService, private _router: Router) {
+  constructor(
+    private _employeeService: EmployeeService,
+    private _router: Router,
+    private _route: ActivatedRoute) {
     this.datePickerConfig = Object.assign({},
       {
         containerClass: 'theme-dark-blue',
@@ -44,6 +37,11 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Subscribe to route parameter changes and react accordingly
+    this._route.paramMap.subscribe(parameterMap => {
+      const id = +parameterMap.get('id');
+      this.getEmployee(id);
+    });
   }
 
   togglePhotoPreview() {
@@ -57,6 +55,33 @@ export class CreateEmployeeComponent implements OnInit {
     // Reset Form
     this.createEmployeeForm.reset();
     this._router.navigate(['list']);
+  }
+
+  private getEmployee(id: number) {
+    if (id === 0) {
+      this.employee = {
+        id: null,
+        name: null,
+        gender: null,
+        contactPreference: null,
+        phoneNumber: null,
+        email: '',
+        dateOfBirth: null,
+        department: '-1',
+        isActive: null,
+        photoPath: null
+      };
+
+      // Resetting the form, resets any previous validation errors
+      this.createEmployeeForm.reset();
+      this.panelTitle = "Create Employee";
+    } else {
+      // Copy the values into a new object and assign that object as the value for the employee property. Otherwise the employee
+      // property holds a reference to the employee object in the array in the EmployeeService. This means any  changes we make 
+      // on the form are automatically saved, without we explicitly saving by clicking the Save button.
+      this.employee = Object.assign({}, this._employeeService.getEmployee(id));
+      this.panelTitle = "Edit Employee";
+    }
   }
 
 }
