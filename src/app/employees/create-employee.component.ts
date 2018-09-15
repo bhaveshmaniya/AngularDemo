@@ -50,11 +50,16 @@ export class CreateEmployeeComponent implements OnInit {
 
   saveEmployee(): void {
     // console.log(this.employee);
-    const newEmployee: Employee = Object.assign({}, this.employee);
-    this._employeeService.save(newEmployee);
-    // Reset Form
-    this.createEmployeeForm.reset();
-    this._router.navigate(['list']);
+    this._employeeService.save(this.employee).subscribe(
+      (data: Employee) => {
+        // log the employee object after the post is completed
+        console.log(data);
+        // Reset Form
+        this.createEmployeeForm.reset();
+        this._router.navigate(['list']);
+      },
+      (error: any) => { console.log(error); }
+    );
   }
 
   private getEmployee(id: number) {
@@ -83,5 +88,5 @@ export class CreateEmployeeComponent implements OnInit {
       this.panelTitle = "Edit Employee";
     }
   }
-
+  
 }

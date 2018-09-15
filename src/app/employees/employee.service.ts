@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Employee } from '../models/employee.model';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
@@ -72,15 +72,22 @@ export class EmployeeService {
         return this.listEmployees.find(e => e.id === id);
     }
 
-    save(employee: Employee) {
+    save(employee: Employee): Observable<Employee> {
         if (employee.id == null) {
-            var maxId = this.listEmployees.reduce(function (e1, e2) {
-                return (e1.id > e2.id ? e1 : e2);
-            }).id;
+            // var maxId = this.listEmployees.reduce(function (e1, e2) {
+            //     return (e1.id > e2.id ? e1 : e2);
+            // }).id;
 
-            // Increment Id value
-            employee.id = maxId + 1;
-            this.listEmployees.push(employee);
+            // // Increment Id value
+            // employee.id = maxId + 1;
+            // this.listEmployees.push(employee);
+            return this._httpClient.post<Employee>('http://localhost:3000/employees', employee,
+                {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json'
+                    })
+                })
+                .pipe(catchError(this.handleError));
         } else {
             var foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
             this.listEmployees[foundIndex] = employee;
