@@ -4,3 +4,6 @@
 <div *ngFor="let employee of filteredEmployees">
   <app-display-employee [employee]="employee" [searchTerm]="searchTerm" (notifyDelete)="onDeleteNotification($event)"></app-display-employee>
 </div>
+<div *ngIf="error">
+    {{ error }}
+</div>

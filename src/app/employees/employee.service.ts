@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Employee } from '../models/employee.model';
 import { Observable } from 'rxjs/Observable';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/catch';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class EmployeeService {
+    constructor(private _httpClient: HttpClient) {
+    }
+
     private listEmployees: Employee[] = [
         {
             id: 1,
@@ -43,7 +50,22 @@ export class EmployeeService {
     ];
 
     getEmployees(): Observable<Employee[]> {
-        return Observable.of(this.listEmployees).delay(2000);
+        //return Observable.of(this.listEmployees).delay(2000);
+        //return this._httpClient.get<Employee[]>('http://localhost:3000/employees').delay(2000);
+        return this._httpClient.get<Employee[]>('http://localhost:3000/employees')
+            //.catch(this.handleError);
+            .pipe(catchError(this.handleError));
+    }
+
+    private handleError(errorResponse: HttpErrorResponse) {
+        if (errorResponse instanceof ErrorEvent) {
+            console.error('Client Side Error :', errorResponse.error.message);
+        } else {
+            console.error('Server Side Error :', errorResponse);
+        }
+
+        // return an observable with a meaningful error message to the end user
+        return new ErrorObservable('There is a problem with the service.We are notified & working on it. Please try again later.');
     }
 
     getEmployee(id: number): Employee {
