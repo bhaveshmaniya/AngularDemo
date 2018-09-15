@@ -10,7 +10,7 @@ import { ResolvedEmployeeList } from './resolved-employeelist.model';
 export class ListEmployeesComponent implements OnInit {
   employees: Employee[];
   filteredEmployees: Employee[];
-  error : string;
+  error: string;
 
   private _searchTerm: string;
   get searchTerm(): string {
@@ -22,12 +22,20 @@ export class ListEmployeesComponent implements OnInit {
   }
 
   constructor(private _route: ActivatedRoute) {
-    const resolvedEmployeeList: ResolvedEmployeeList = this._route.snapshot.data['employeeList'];
+    // resolvedData can either be a string or Employee[]
+    //const resolvedEmployeeList: ResolvedEmployeeList = this._route.snapshot.data['employeeList'];
+    const resolvedData: string | Employee[] = this._route.snapshot.data['employeeList'];
 
-    if (resolvedEmployeeList.error == null) {
-      this.employees = resolvedEmployeeList.employeeList;
+    // If the resolver completed without errors resolvedData is an Employee[]
+    // if (resolvedEmployeeList.error == null) {
+    //   this.employees = resolvedEmployeeList.employeeList;
+    // } else {
+    //   this.error = resolvedEmployeeList.error;
+    // }
+    if (Array.isArray(resolvedData)) {
+      this.employees = resolvedData;
     } else {
-      this.error = resolvedEmployeeList.error;
+      this.error = resolvedData;
     }
 
     // Snapshot approach

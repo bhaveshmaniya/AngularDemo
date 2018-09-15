@@ -7,14 +7,22 @@ import { ResolvedEmployeeList } from "./resolved-employeelist.model";
 import { map, catchError } from "rxjs/operators";
 
 @Injectable()
-export class EmployeeListResolverService implements Resolve<ResolvedEmployeeList> {
+// The resolver returns a union type - either an Employee[] or string
+// Employee[]  will be returned if the resolver completes successfully
+// else the string error message will be returned
+//export class EmployeeListResolverService implements Resolve<ResolvedEmployeeList> {
+export class EmployeeListResolverService implements Resolve<Employee[] | string> {
     constructor(private _employeeService: EmployeeService) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResolvedEmployeeList> {
+    // The return type of the resolve() method matches with the above Resolve interface signtaure
+    //resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResolvedEmployeeList> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Employee[] | string> {
+        // return this._employeeService.getEmployees()
+        //     .pipe(
+        //         map((employeeList) => new ResolvedEmployeeList(employeeList)),
+        //         catchError((err: any) => Observable.of(new ResolvedEmployeeList(null, err)))
+        //     );
         return this._employeeService.getEmployees()
-            .pipe(
-                map((employeeList) => new ResolvedEmployeeList(employeeList)),
-                catchError((err: any) => Observable.of(new ResolvedEmployeeList(null, err)))
-            );
+            .pipe(catchError((err: string) => Observable.of(err)));
     }
 }
