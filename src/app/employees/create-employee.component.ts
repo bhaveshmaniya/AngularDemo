@@ -49,17 +49,27 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   saveEmployee(): void {
-    // console.log(this.employee);
-    this._employeeService.save(this.employee).subscribe(
-      (data: Employee) => {
-        // log the employee object after the post is completed
-        console.log(data);
-        // Reset Form
-        this.createEmployeeForm.reset();
-        this._router.navigate(['list']);
-      },
-      (error: any) => { console.log(error); }
-    );
+    if (this.employee.id == null) {
+      //console.log(this.employee);
+      this._employeeService.addEmployee(this.employee).subscribe(
+        (data: Employee) => {
+          // log the employee object after the post is completed
+          console.log(data);
+          // Reset Form
+          this.createEmployeeForm.reset();
+          this._router.navigate(['list']);
+        },
+        (error: any) => { console.log(error); }
+      );
+    } else {
+      this._employeeService.updateEmployee(this.employee).subscribe(
+        () => {
+          this.createEmployeeForm.reset();
+          this._router.navigate(['list']);
+        },
+        (error: any) => { console.log(error); }
+      );
+    }
   }
 
   private getEmployee(id: number) {
@@ -84,9 +94,12 @@ export class CreateEmployeeComponent implements OnInit {
       // Copy the values into a new object and assign that object as the value for the employee property. Otherwise the employee
       // property holds a reference to the employee object in the array in the EmployeeService. This means any  changes we make 
       // on the form are automatically saved, without we explicitly saving by clicking the Save button.
-      this.employee = Object.assign({}, this._employeeService.getEmployee(id));
+      this._employeeService.getEmployee(id).subscribe(
+        (employee) => { this.employee = employee; },
+        (error: any) => { console.log(error); }
+      );
       this.panelTitle = "Edit Employee";
     }
   }
-  
+
 }
